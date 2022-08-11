@@ -4,7 +4,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'pdf') {
     $name = $_POST['inputName'];
     $Email = $_POST['inputEmail'];
     $Passowrd = $_POST['inputPassword'];
-    $file_name = md5(rand()) . '.pdf';
 
     ob_end_clean();
     require('fpdf184/fpdf.php');
@@ -29,22 +28,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'pdf') {
     ' . $Passowrd . '
     ');
 
-    // // contant in the documents/
-    // $contents = '
-    // Contact Details:
-    // name
-    // ' . $name . '
-    // email
-    // ' . $Email . '
-    // password
-    // ' . $Passowrd . '
-    // ';
-
+    $folder = 'pdf/' . md5(rand()) . ".pdf";
     // return the generated output
-    $result = $pdf->Output($file_name, 'D');
-    // $file_success = file_put_contents($file_name, $contents);
-
-
+    $result = $pdf->Output('F', $folder, true);
 
     require 'class/class.phpmailer.php';
     $mail = new PHPMailer;
@@ -57,17 +43,17 @@ if (isset($_POST['action']) && $_POST['action'] == 'pdf') {
     $mail->SMTPSecure = '';                            //Sets connection prefix. Options are "", "ssl" or "tls"
     $mail->From = 'adejumobitoluwanimi2@gmail.com';            //Sets the From email address for the message
     $mail->FromName = 'Toluwanimi';            //Sets the From name of the message
-    $mail->AddAddress('empty for now', 'Toluwanimi');        //Adds a "To" address
+    $mail->AddAddress('$Email', '$name');        //Adds a "To" address
     $mail->WordWrap = 50;                            //Sets word wrapping on the body of the message to a given number of characters
     $mail->IsHTML(true);                            //Sets message type to HTML				
-    $mail->AddAttachment($result);                     //Adds an attachment from a path on the filesystem
+    $mail->AddAttachment($folder);                     //Adds an attachment from a path on the filesystem
     $mail->Subject = 'Details';            //Sets the Subject of the message
-    $mail->Body = $contents;                //An HTML or plain text message body
+    $mail->Body = $result;                //An HTML or plain text message body
     if ($mail->Send())                                //Send an Email. Return true on success or false on error
     {
         echo '<label class="text-success">Customer Details has been send successfully...</label>';
     } else {
         echo "Email send failed";
     }
-    unlink($file_name);
+    // unlink($result);
 }

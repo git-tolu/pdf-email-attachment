@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="offset-sm-2 col-sm-10">
-                        <button id="pdfBTN" type="submit" name="action" class="btn btn-primary">Action</button>
+                        <button id="pdfBTN" type="submit" name="action" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
             </form>
@@ -49,7 +49,7 @@
                     data: $("#pdf").serialize() + '&action=pdf',
                     success: function(response) {
                         console.log(response)
-                        $("#pdfBTN").text("Action");
+                        $("#pdfBTN").text("Submit");
                     }
                 });
             });
